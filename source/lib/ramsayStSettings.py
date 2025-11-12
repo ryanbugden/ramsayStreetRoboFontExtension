@@ -45,7 +45,7 @@ class AddGlyphNameSheet(object):
 class RamsayStSettingsWindowController(BaseWindowController):
 
     def __init__(self):
-        self.w = vanilla.FloatingWindow((310, 300), "Ramsay St. Settings", minSize=(310, 250), maxSize=(310, 700))
+        self.w = vanilla.FloatingWindow((310, 300), "Ramsay St. Settings", minSize=(310, 250), maxSize=(700, 700))
 
         self.w.showNeighbours = vanilla.CheckBox((10, 10, -10, 22), "Show Neighbours", value=RamsayStData.showNeighbours, callback=self.showNeighboursCallback)
         self.w.showPreview = vanilla.CheckBox((10, 40, -10, 22), "Show In Preview Mode", value=RamsayStData.showPreview, callback=self.showPreviewCallback)
@@ -161,15 +161,15 @@ class RamsayStSettingsWindowController(BaseWindowController):
 
         output = [
             "# Ramsay St. Glyph List",
-            "# Use _ as a placeholder for 'no glyph'"
+            "# Use _ as a placeholder for 'no glyph'",
             "# <glyphName> <leftGlyphName> <rightGlyphName>"
         ]
         for glyphName in sorted(RamsayStData.keys()):
             left, right = RamsayStData.get(glyphName, (None, None))
-            if all([left, right]):
-                if left == ' ':
+            if all([left is not None, right is not None]):
+                if left in (' ', ''):
                     left = '_'
-                if right == ' ':
+                if right in (' ', ''):
                     right = '_'
                 output.append(f"{glyphName} {left} {right}")
 
