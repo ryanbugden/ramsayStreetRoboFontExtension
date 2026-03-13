@@ -4,26 +4,25 @@ from mojo.UI import appearanceColorKey, getDefault
 from ramsayStData import RamsayStData
 
 
-class RamsaySts(Subscriber):
+class RamsayStSubscriber(Subscriber):
 
     debug = False
 
     def build(self):
         glyphEditor = self.getGlyphEditor()
-        previewFillColor = getDefault(
-            appearanceColorKey("glyphViewPreviewFillColor"))
+        previewFillColor = getDefault(appearanceColorKey("glyphViewPreviewFillColor"))
         self.leftGlyph = self.rightGlyph = None
 
         container = glyphEditor.extensionContainer(RamsayStData.identifier, location="middleground")
         self.leftGlyphContainer = container.appendPathSublayer(
-            fillColor=RamsayStData.fillColor,
-            strokeColor=RamsayStData.strokeColor,
+            fillColor=RamsayStData.fillColorLight,
+            strokeColor=RamsayStData.strokeColorLight,
             strokeWidth=1,
             visible=False
         )
         self.rightGlyphContainer = container.appendPathSublayer(
-            fillColor=RamsayStData.fillColor,
-            strokeColor=RamsayStData.strokeColor,
+            fillColor=RamsayStData.fillColorLight,
+            strokeColor=RamsayStData.strokeColorLight,
             strokeWidth=1,
             visible=False
         )
@@ -144,4 +143,4 @@ registerSubscriberEvent(
 )
 
 
-registerGlyphEditorSubscriber(RamsaySts)
+registerGlyphEditorSubscriber(RamsayStSubscriber)

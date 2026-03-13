@@ -50,8 +50,10 @@ class RamsayStDataCollection(object):
     _fallbackShowPreview = True
 
     identifier = "com.typemytype.ramsaySt"
-    fillColorDefaultKey = f"{identifier}.fillColor"
-    strokeColorDefaultKey = f"{identifier}.strokeColor"
+    fillColorLightDefaultKey = f"{identifier}.fillColor.light"
+    strokeColorLightDefaultKey = f"{identifier}.strokeColor.light"
+    fillColorDarkDefaultKey = f"{identifier}.fillColor.dark"
+    strokeColorDarkDefaultKey = f"{identifier}.strokeColor.dark"
     showNeighboursDefaultKey = f"{identifier}.showNeighbours"
     showPreviewDefaultKey = f"{identifier}.showPreview"
     dataDefaultKey = f"{identifier}.data"
@@ -62,15 +64,19 @@ class RamsayStDataCollection(object):
         self.load()
 
     def load(self):
-        self.fillColor = getExtensionDefault(self.fillColorDefaultKey, self._fallBackFillColor)
-        self.strokeColor = getExtensionDefault(self.strokeColorDefaultKey, self._fallBackStrokeColor)
+        self.fillColorLight = getExtensionDefault(self.fillColorLightDefaultKey, self._fallBackFillColorLight)
+        self.fillColorDark = getExtensionDefault(self.fillColorDarkDefaultKey, self._fallBackFillColorDark)
+        self.strokeColorLight = getExtensionDefault(self.strokeColorLightDefaultKey, self._fallBackStrokeColorLight)
+        self.strokeColorDark = getExtensionDefault(self.strokeColorDarkDefaultKey, self._fallBackStrokeColorDark)
         self.showNeighbours = getExtensionDefault(self.showNeighboursDefaultKey, self._fallbackShowNeighbours)
         self.showPreview = getExtensionDefault(self.showPreviewDefaultKey, self._fallbackShowPreview)
         self.data = getExtensionDefault(self.dataDefaultKey, self._fallbackData)
 
     def save(self):
-        setExtensionDefault(self.fillColorDefaultKey, self.fillColor)
-        setExtensionDefault(self.strokeColorDefaultKey, self.strokeColor)
+        setExtensionDefault(self.fillColorLightDefaultKey, self.fillColorLight)
+        setExtensionDefault(self.strokeColorLightDefaultKey, self.strokeColorLight)
+        setExtensionDefault(self.fillColorDarkDefaultKey, self.fillColorDark)
+        setExtensionDefault(self.strokeColorDarkDefaultKey, self.strokeColorDark)
         setExtensionDefault(self.showNeighboursDefaultKey, self.showNeighbours)
         setExtensionDefault(self.showPreviewDefaultKey, self.showPreview)
         setExtensionDefault(self.dataDefaultKey, self.data)
