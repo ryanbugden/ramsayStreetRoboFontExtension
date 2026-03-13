@@ -1,4 +1,4 @@
-name: Ramsay St
+name: Ramsay St.
 developer: TypeMyType
 developerURL: http://www.typemytype.com
 launchAtStartUp: true
@@ -6,7 +6,7 @@ mainScript: ramsaySt.py
 version: '2.7.3'
 addToMenu:
 - path: ramsayStSettings.py
-  preferredName: Ramsay St. Settings
+  preferredName: Settings...
   shortKey: ''
 html: true
 requiresVersionMajor: '4'

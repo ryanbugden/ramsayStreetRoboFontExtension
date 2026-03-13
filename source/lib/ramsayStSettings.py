@@ -1,14 +1,9 @@
 import ezui
 
-from mojo.roboFont import OpenWindow
 from mojo.UI import PutFile, GetFile
 from mojo.events import postEvent
 
-import ramsayStData
-from importlib import reload as reloadlib
-reloadlib(ramsayStData)
 from ramsayStData import RamsayStData
-
 
 
 class RamsayStSettingsController(ezui.WindowController):
@@ -22,12 +17,12 @@ class RamsayStSettingsController(ezui.WindowController):
         > [X] Preview Mode              @showNeighborsPreviewMode
         
         > : Fill Color:
-        > * HorizontalStack             @colorStack
+        > * HorizontalStack             @fillColorStack
         >> * ColorWell                  @fillColorLight
         >> * ColorWell                  @fillColorDark
         
         > : Stroke Color:
-        > * HorizontalStack             @colorStack
+        > * HorizontalStack             @strokeColorStack
         >> * ColorWell                  @strokeColorLight
         >> * ColorWell                  @strokeColorDark
         
@@ -35,7 +30,6 @@ class RamsayStSettingsController(ezui.WindowController):
         > * HorizontalStack
         >> Light                        @lightLabel
         >> Dark                         @darkLabel
-        
         
         # > : Stroke Color:
         # > * ColorWell                 @strokeColor
@@ -65,7 +59,14 @@ class RamsayStSettingsController(ezui.WindowController):
             table=dict(
                 width="fill",
                 height="fill",
-                items=RamsayStData.getItems(),
+                items=[
+                    {
+                        "glyph_name": item.glyphName(),
+                        "left": item.left(),
+                        "right": item.right()
+                    }
+                    for item in RamsayStData.getItems()
+                ],
                 columnDescriptions=[
                     dict(
                         identifier="left",
@@ -86,9 +87,6 @@ class RamsayStSettingsController(ezui.WindowController):
                         editable=True
                     ),
                 ]
-            ),
-            colorStack=dict(
-                distribution="fillEqually",
             ),
             fillColorLight=dict(
                 color=(0,0,1,0.2),
@@ -126,7 +124,7 @@ class RamsayStSettingsController(ezui.WindowController):
             ),
         )
         self.w = ezui.EZPanel(
-            title="Ramsay St.",
+            title="Ramsay St. Settings",
             size=(column_width*3, 400),
             minSize=(column_width*3, 300),
             maxSize=(column_width*3, 800),
@@ -136,16 +134,16 @@ class RamsayStSettingsController(ezui.WindowController):
         )
 
     def started(self):
+        self.load_from_data()
         self.w.open()
 
     def formCallback(self, sender):
-        print("formCallback")
-        self.update()
+        self.save_settings_data()
 
     def tableEditCallback(self, sender):
-        self.update()
+        self.save_table_data()
         
-    def tableAddRemoveButtonAddCallback(self, sender):
+    def tableAddRemoveAddCallback(self, sender):
         table = self.w.getItem("table")
         item = table.makeItem(
             left="A",
@@ -153,71 +151,63 @@ class RamsayStSettingsController(ezui.WindowController):
             right="A"
         )
         table.appendItems([item])
-        self.update()
+        self.save_table_data()
 
-    def tableAddRemoveButtonRemoveCallback(self, sender):
+    def tableAddRemoveRemoveCallback(self, sender):
         table = self.w.getItem("table")
         table.removeSelectedItems()
-        self.update()
+        self.save_table_data()
 
-    def update(self):
+    def load_from_data(self):
+        self.w.getItem("fillColorLight").set(RamsayStData.fillColorLight)
+        self.w.getItem("fillColorDark").set(RamsayStData.fillColorDark)
+        self.w.getItem("strokeColorLight").set(RamsayStData.strokeColorLight)
+        self.w.getItem("strokeColorDark").set(RamsayStData.strokeColorDark)
+        self.w.getItem("showNeighborsEditMode").set(RamsayStData.showNeighbours)
+        self.w.getItem("showNeighborsPreviewMode").set(RamsayStData.showPreview)
+        self.w.getItem("table").set([{"glyph_name": item.glyphName(), "left": item.left(), "right": item.right()} for item in RamsayStData.getItems()])
+
+    def save_settings_data(self):
         RamsayStData.fillColorLight = self.w.getItem("fillColorLight").get()
         RamsayStData.fillColorDark = self.w.getItem("fillColorDark").get()
         RamsayStData.strokeColorLight = self.w.getItem("strokeColorLight").get()
         RamsayStData.strokeColorDark = self.w.getItem("strokeColorDark").get()
         RamsayStData.showNeighbours = self.w.getItem("showNeighborsEditMode").get()
         RamsayStData.showPreview = self.w.getItem("showNeighborsPreviewMode").get()
-        RamsayStData.data = self.w.getItem("table").get()
+        postEvent(RamsayStData.changedEventName)
+
+    def save_table_data(self):
+        new_data = dict()
+        for item in self.w.getItem("table").get():
+            key = item.get("glyph_name")
+            left = item.get("left")
+            right = item.get("right")
+            if key:
+                new_data[key] = (left, right)
+        RamsayStData.data = new_data
         RamsayStData.save()
         postEvent(RamsayStData.changedEventName)
-        
-    def importGlyphNames(self):
+
+    def importButtonCallback(self, sender):
         path = GetFile(
             message="Where would you like to import Ramsay St. settings from?", 
             title="Import Ramsay St. Settings",
             allowsMultipleSelection=False, 
             fileTypes=["ramsaySt"], 
-            parentWindow=self.w, 
         )
-        if path:
-            path = path[0]
-            with open(path, "r") as blob:
-                lines = blob.read().splitlines()
+        self.importGlyphNames(path)
 
-            data = dict()
-            for line in lines:
-                if line.startswith("#"):
-                    continue
-
-                items = line.split()
-                if len(items) == 3:
-                    glyphName, leftGlyphName, rightGlyphName = items
-                    if leftGlyphName == '_':
-                        leftGlyphName = ' '
-                    if rightGlyphName == '_':
-                        rightGlyphName = ' '
-                    data["glyph_name"] = glyphName
-                    data["left"] = leftGlyphName
-                    data["right"] = rightGlyphName
-                else:
-                    continue
-
-            RamsayStData.clear()
-            RamsayStData.update(data)
-            self.w.table.set(data)
-            self.update()
-
+    def exportButtonCallback(self, sender):
+        self.exportGlyphNames()
+        
     def importGlyphNames(self, path):
         if path:
-            path = path[0]
             with open(path, "r") as blob:
                 lines = blob.read().splitlines()
-
             data = dict()
             for line in lines:
                 if line.startswith("#"):
                     continue
-
                 items = line.split()
                 if len(items) == 3:
                     glyphName, leftGlyphName, rightGlyphName = items
@@ -231,14 +221,13 @@ class RamsayStSettingsController(ezui.WindowController):
 
             RamsayStData.clear()
             RamsayStData.update(data)
-            self.w.dataList.set(RamsayStData.getItems())
-            self.update()
+            self.w.getItem("table").set([{"glyph_name": item.glyphName(), "left": item.left(), "right": item.right()} for item in RamsayStData.getItems()])
+            self.save_settings_data()
 
     def exportGlyphNames(self):
         path = PutFile(
             message="Where would you like to save these Ramsay St. settings?", 
             fileName="Untitled.ramsaySt",   
-            parentWindow=self.w, 
         )
         if path is None:
             return
@@ -248,15 +237,14 @@ class RamsayStSettingsController(ezui.WindowController):
             "# Use _ as a placeholder for 'no glyph'",
             "# <glyphName> <leftGlyphName> <rightGlyphName>"
         ]
-        for dataEntry in RamsayStData.data:
-            left, glyphName, right = dataEntry["left"], dataEntry["glyph_name"], dataEntry["right"]
+        for glyphName in sorted(RamsayStData.keys()):
+            left, right = RamsayStData.get(glyphName, (None, None))
             if all([left is not None, right is not None]):
                 if left in (' ', ''):
                     left = '_'
                 if right in (' ', ''):
                     right = '_'
                 output.append(f"{glyphName} {left} {right}")
-
         with open(path, "w") as blob:
             blob.write("\n".join(output))
 
