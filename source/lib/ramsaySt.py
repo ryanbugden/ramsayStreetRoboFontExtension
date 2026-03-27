@@ -1,29 +1,28 @@
 from mojo.subscriber import Subscriber, registerGlyphEditorSubscriber, registerSubscriberEvent
-from mojo.UI import appearanceColorKey, getDefault
+from mojo.UI import appearanceColorKey, getDefault, inDarkMode
 
 from ramsayStData import RamsayStData
 
 
-class RamsaySts(Subscriber):
+class RamsayStSubscriber(Subscriber):
 
     debug = False
 
     def build(self):
         glyphEditor = self.getGlyphEditor()
-        previewFillColor = getDefault(
-            appearanceColorKey("glyphViewPreviewFillColor"))
+        previewFillColor = getDefault(appearanceColorKey("glyphViewPreviewFillColor"))
         self.leftGlyph = self.rightGlyph = None
 
         container = glyphEditor.extensionContainer(RamsayStData.identifier, location="middleground")
         self.leftGlyphContainer = container.appendPathSublayer(
-            fillColor=RamsayStData.fillColor,
-            strokeColor=RamsayStData.strokeColor,
+            fillColor=[RamsayStData.fillColorLight, RamsayStData.fillColorDark][inDarkMode()],
+            strokeColor=[RamsayStData.strokeColorLight, RamsayStData.strokeColorDark][inDarkMode()],
             strokeWidth=1,
             visible=False
         )
         self.rightGlyphContainer = container.appendPathSublayer(
-            fillColor=RamsayStData.fillColor,
-            strokeColor=RamsayStData.strokeColor,
+            fillColor=[RamsayStData.fillColorLight, RamsayStData.fillColorDark][inDarkMode()],
+            strokeColor=[RamsayStData.strokeColorLight, RamsayStData.strokeColorDark][inDarkMode()],
             strokeWidth=1,
             visible=False
         )
@@ -118,13 +117,19 @@ class RamsaySts(Subscriber):
             appearanceColorKey("glyphViewPreviewFillColor"))
         self.previewLeftGlyphContainer.setFillColor(rgba)
         self.previewRightGlyphContainer.setFillColor(rgba)
+        self.leftGlyphContainer.setFillColor([RamsayStData.fillColorLight, RamsayStData.fillColorDark][inDarkMode()])
+        self.leftGlyphContainer.setStrokeColor([RamsayStData.strokeColorLight, RamsayStData.strokeColorDark][inDarkMode()])
+        self.leftGlyphContainer.setVisible(RamsayStData.showNeighbours)
+        self.rightGlyphContainer.setFillColor([RamsayStData.fillColorLight, RamsayStData.fillColorDark][inDarkMode()])
+        self.rightGlyphContainer.setStrokeColor([RamsayStData.strokeColorLight, RamsayStData.strokeColorDark][inDarkMode()])
+        self.rightGlyphContainer.setVisible(RamsayStData.showNeighbours)
 
     def ramsayStSettingDidChange(self, info):
-        self.leftGlyphContainer.setFillColor(RamsayStData.fillColor)
-        self.leftGlyphContainer.setStrokeColor(RamsayStData.strokeColor)
+        self.leftGlyphContainer.setFillColor([RamsayStData.fillColorLight, RamsayStData.fillColorDark][inDarkMode()])
+        self.leftGlyphContainer.setStrokeColor([RamsayStData.strokeColorLight, RamsayStData.strokeColorDark][inDarkMode()])
         self.leftGlyphContainer.setVisible(RamsayStData.showNeighbours)
-        self.rightGlyphContainer.setFillColor(RamsayStData.fillColor)
-        self.rightGlyphContainer.setStrokeColor(RamsayStData.strokeColor)
+        self.rightGlyphContainer.setFillColor([RamsayStData.fillColorLight, RamsayStData.fillColorDark][inDarkMode()])
+        self.rightGlyphContainer.setStrokeColor([RamsayStData.strokeColorLight, RamsayStData.strokeColorDark][inDarkMode()])
         self.rightGlyphContainer.setVisible(RamsayStData.showNeighbours)
 
         self.previewLeftGlyphContainer.setPath(self.leftGlyphContainer.getPath())
@@ -138,10 +143,10 @@ registerSubscriberEvent(
     methodName="ramsayStSettingDidChange",
     lowLevelEventNames=[RamsayStData.changedEventName],
     dispatcher="roboFont",
-    documentation="Send when RamsaySt setting did change.",
+    documentation="Send when Ramsay St. settings data did change.",
     delay=0,
     debug=True
 )
 
 
-registerGlyphEditorSubscriber(RamsaySts)
+registerGlyphEditorSubscriber(RamsayStSubscriber)

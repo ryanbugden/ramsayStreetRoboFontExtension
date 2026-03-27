@@ -1,46 +1,44 @@
 Ramsay St.
 ==========
 
-A RoboFont extension to display similarly-shaped glyphs to the left & right of the glyph being edited.
+A RoboFont extension to display similarly-shaped glyphs to the left & right of the current glyph.
 
 ![](imgs/RamsaySt_preview.png)
 
-Once installed, RamsayStreet will become available from the *Extensions* menu.
+Once installed, Ramsay St. will become available from the *Extensions* menu.
 
-Use the menu to open the *Settings* window:
+Use the menu to open the **Settings** window:
 
 ![](imgs/RamsaySt_settings.png)
 
-<dl>
+### Toggle Preview
+- Use the **Edit Mode** checkbox to turn the glyph previews on/off in the Glyph Editor’s normal state.
+- Use the **Preview Mode** checkbox to turn the glyph previews on/off in the Glyph Editor’s *preview* state.
 
-<dt>Toggle preview</dt>
-<dd>Use the <em>Show Preview</em> checkbox to turn the glyph previews on/off.</dd>
+### Change Colors
+- Use the color swatches to pick the fill and stroke colors for the glyph previews. Light and dark modes are supported for each.
 
-<dt>Change colors</dt>
-<dd>Use the color swatches to pick the colors for the glyph previews.</dd>
+### Define Left / Right Glyphs
+- Double-click the table cells to edit left/right preview glyphs for each glyph.  
+- Use the +/- buttons to add/remove glyphs from the list.
 
-<dt>Define left/right glyphs</dt>
-<dd>
-Double-click the table cells to edit left/right preview glyphs for each glyph.<br/>
-Use the +/- buttons to add/remove glyphs from the list.
-</dd>
+### Import / Export Glyph List
 
-<dt>Jump to preview glyph</dt>
-<dd>Triple-click a left/right preview glyph to edit that glyph in the current window.</dd>
+- Use the **Import / Export** buttons to import or export the glyphs list to a `.ramsaySt` file for safe-keeping.
 
-<dt>Import/export glyphs list</dt>
-<dd>Use the <em>import/export</em> buttons to import/export the glyphs list to a <code>.ramsaySt</code> file.</dd>
+### Jump to Preview Glyph
+- Triple-click a left / right preview glyph to edit that glyph in the current window.
 
-</dl>
+
 
 ----
 
-    Neighbours, Everybody needs good neighbours
-    With a little understanding
-    You can find the perfect blend
-    Neighbours...should be there for one another
-    That's when good neighbours become good friends
-    Ooh Neighbours, should be there for one another
+    Neighbours, everybody needs good neighbours.
+    With a little understanding,
+    You can find the perfect blend.
+    Neighbours... should be there for one another.
+    That's when good neighbours become good friends.
+    Ooh neighbours, should be there for one another.
     That's when good neighbours become good friends.
 
 <embed src="http://www.youtube.com/v/64tOb0IqWZo&autoplay=1&rel=0" type="application/x-shockwave-flash" wmode="transparent"></embed>
