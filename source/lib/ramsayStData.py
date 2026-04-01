@@ -46,7 +46,7 @@ class RamsayStDataCollection(object):
     _fallBackFillColorLight = 0, 0, 1, 0.2
     _fallBackStrokeColorLight = 0, 0, 0, 0
     _fallBackFillColorDark = 0, 0, 1, 0.2
-    _fallBackStrokeColorDark = 0, 0, 0, 0
+    _fallBackStrokeColorDark = 1, 1, 1, 0
     _fallbackData = {'-': ('n', 'H'), 'A': ('H', 'V'), 'C': ('c', 'G'), 'B': ('P', 'D'), 'E': ('B', 'F'), 'D': ('B', 'P'), 'G': ('C', 'O'), 'F': ('P', 'E'), 'I': ('J', 'H'), 'H': ('I', 'P'), 'K': ('k', 'I'), 'J': ('j', 'I'), 'M': ('H', 'N'), 'L': ('I', 'H'), 'O': ('C', 'o'), 'N': ('M', 'V'), 'Q': ('O', 'G'), 'P': ('R', 'p'), 'S': ('C', 's'), 'R': ('B', 'P'), 'U': ('u', 'H'), 'T': ('I', 'H'), 'W': ('w', 'V'), 'V': ('v', 'W'), 'Y': ('y', 'V'), 'X': ('x', 'Y'), 'Z': ('z', 'X'), 'a': ('n', 'e'), 'c': ('e', 'C'), 'b': ('d', 'p'), 'e': ('o', 'c'), 'd': ('q', 'b'), 'g': ('o', 'q'), 'f': ('i', 't'), 'i': ('period', 'j'), 'h': ('l', 'n'), 'k': ('h', 'K'), 'j': ('i', 'period'), 'm': ('n', 'w'), 'l': ('h', 'k'), 'o': ('c', 'O'), 'n': ('h', 'm'), 'q': ('d', 'p'), 'p': ('q', 'P'), 's': ('e', 'S'), 'r': ('s', 'n'), 'u': ('v', 'n'), 't': ('s', 'f'), 'w': ('v', 'W'), 'v': ('u', 'w'), 'y': ('v', 'Y'), 'x': ('y', 'X'), 'z': ('x', 'Z')}
     _fallbackShowNeighbours = True
     _fallbackShowPreview = True
