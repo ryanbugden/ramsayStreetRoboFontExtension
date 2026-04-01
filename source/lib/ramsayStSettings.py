@@ -46,15 +46,15 @@ class RamsayStSettingsController(ezui.WindowController):
         > (Import)                      @importButton
         > (Export)                      @exportButton
         """
-        column_width = 80
+        columnWidth = 80
         padding = 28
-        form_title_width = column_width + 14
-        form_item_width = column_width*3 - form_title_width + padding*2
-        button_width = (form_item_width - 10) / 2
+        formTitleWidth = columnWidth + 14
+        formItemWidth = columnWidth*3 - formTitleWidth + padding*2
+        buttonWidth = (formItemWidth - 10) / 2
         descriptionData = dict(
             form=dict(
-                titleColumnWidth=column_width + 14,
-                itemColumnWidth=form_item_width,
+                titleColumnWidth=columnWidth + 14,
+                itemColumnWidth=formItemWidth,
             ),
             table=dict(
                 width="fill",
@@ -71,76 +71,76 @@ class RamsayStSettingsController(ezui.WindowController):
                     dict(
                         identifier="left",
                         title="Left",
-                        width=column_width,
+                        width=columnWidth,
                         editable=True
                     ),
                     dict(
                         identifier="glyph_name",
                         title="Glyph Name",
-                        width=column_width,
+                        width=columnWidth,
                         editable=True
                     ),
                     dict(
                         identifier="right",
                         title="Right",
-                        width=column_width,
+                        width=columnWidth,
                         editable=True
                     ),
                 ]
             ),
             fillColorLight=dict(
                 color=(0,0,1,0.2),
-                width=button_width,
+                width=buttonWidth,
                 height=20,
             ),
             fillColorDark=dict(
                 color=(0,0,1,0.2),
-                width=button_width,
+                width=buttonWidth,
                 height=20,
             ),
             strokeColorLight=dict(
                 color=(0,0,1,0),
-                width=button_width,
+                width=buttonWidth,
                 height=20,
             ),
             strokeColorDark=dict(
                 color=(0,0,1,0),
-                width=button_width,
+                width=buttonWidth,
                 height=20,
             ),
             lightLabel=dict(
-                width=button_width,
+                width=buttonWidth,
                 sizeStyle="mini",
             ),
             darkLabel=dict(
-                width=button_width,
+                width=buttonWidth,
                 sizeStyle="mini",
             ),
             importButton=dict(
-                width=button_width
+                width=buttonWidth
             ),
             exportButton=dict(
-                width=button_width
+                width=buttonWidth
             ),
         )
         self.w = ezui.EZPanel(
             title="Ramsay St. Settings",
-            size=(column_width*3, 400),
-            minSize=(column_width*3, 300),
+            size=(columnWidth*3, 400),
+            minSize=(columnWidth*3, 300),
             content=content,
             descriptionData=descriptionData,
             controller=self
         )
 
     def started(self):
-        self.load_from_data()
+        self.loadFromData()
         self.w.open()
 
     def formCallback(self, sender):
-        self.save_settings_data()
+        self.saveSettingsData()
 
     def tableEditCallback(self, sender):
-        self.save_table_data()
+        self.saveTableData()
         
     def tableAddRemoveAddCallback(self, sender):
         table = self.w.getItem("table")
@@ -150,14 +150,14 @@ class RamsayStSettingsController(ezui.WindowController):
             right="A"
         )
         table.appendItems([item])
-        self.save_table_data()
+        self.saveTableData()
 
     def tableAddRemoveRemoveCallback(self, sender):
         table = self.w.getItem("table")
         table.removeSelectedItems()
-        self.save_table_data()
+        self.saveTableData()
 
-    def load_from_data(self):
+    def loadFromData(self):
         self.w.getItem("fillColorLight").set(RamsayStData.fillColorLight)
         self.w.getItem("fillColorDark").set(RamsayStData.fillColorDark)
         self.w.getItem("strokeColorLight").set(RamsayStData.strokeColorLight)
@@ -166,7 +166,7 @@ class RamsayStSettingsController(ezui.WindowController):
         self.w.getItem("showNeighborsPreviewMode").set(RamsayStData.showPreview)
         self.w.getItem("table").set([{"glyph_name": item.glyphName(), "left": item.left(), "right": item.right()} for item in RamsayStData.getItems()])
 
-    def save_settings_data(self):
+    def saveSettingsData(self):
         RamsayStData.fillColorLight = self.w.getItem("fillColorLight").get()
         RamsayStData.fillColorDark = self.w.getItem("fillColorDark").get()
         RamsayStData.strokeColorLight = self.w.getItem("strokeColorLight").get()
@@ -175,7 +175,7 @@ class RamsayStSettingsController(ezui.WindowController):
         RamsayStData.showPreview = self.w.getItem("showNeighborsPreviewMode").get()
         postEvent(RamsayStData.changedEventName)
 
-    def save_table_data(self):
+    def saveTableData(self):
         new_data = dict()
         for item in self.w.getItem("table").get():
             key = item.get("glyph_name")
@@ -221,7 +221,7 @@ class RamsayStSettingsController(ezui.WindowController):
             RamsayStData.clear()
             RamsayStData.update(data)
             self.w.getItem("table").set([{"glyph_name": item.glyphName(), "left": item.left(), "right": item.right()} for item in RamsayStData.getItems()])
-            self.save_settings_data()
+            self.saveSettingsData()
 
     def exportGlyphNames(self):
         path = PutFile(
