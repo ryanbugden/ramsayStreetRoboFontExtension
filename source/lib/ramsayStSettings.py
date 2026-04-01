@@ -127,7 +127,6 @@ class RamsayStSettingsController(ezui.WindowController):
             title="Ramsay St. Settings",
             size=(column_width*3, 400),
             minSize=(column_width*3, 300),
-            maxSize=(column_width*3, 800),
             content=content,
             descriptionData=descriptionData,
             controller=self
